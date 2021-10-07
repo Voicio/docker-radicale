@@ -65,7 +65,7 @@ htpasswd_filename = /config/users
 htpasswd_encryption = bcrypt
 
 # Incorrect authentication delay (seconds)
-delay = 5
+#delay = 5
 
 # Message displayed in the client when a password is needed
 realm = CalDav - Password Required
