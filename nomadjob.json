@@ -1,0 +1,239 @@
+{
+    "Stop": false,
+    "Region": "global",
+    "Namespace": "default",
+    "ID": "radicale",
+    "ParentID": "",
+    "Name": "radicale",
+    "Type": "service",
+    "Priority": 50,
+    "AllAtOnce": false,
+    "Datacenters": [
+        "Miami1"
+    ],
+    "Constraints": null,
+    "Affinities": null,
+    "Spreads": null,
+    "TaskGroups": [{
+        "Name": "main",
+        "Count": 1,
+        "Update": {
+            "Stagger": 10000000000,
+            "MaxParallel": 0,
+            "HealthCheck": "checks",
+            "MinHealthyTime": 30000000000,
+            "HealthyDeadline": 40000000000,
+            "ProgressDeadline": 60000000000,
+            "AutoRevert": true,
+            "AutoPromote": true,
+            "Canary": 1
+        },
+        "Migrate": {
+            "MaxParallel": 1,
+            "HealthCheck": "checks",
+            "MinHealthyTime": 10000000000,
+            "HealthyDeadline": 300000000000
+        },
+        "Constraints": null,
+        "Scaling": null,
+        "RestartPolicy": {
+            "Attempts": 2,
+            "Interval": 1800000000000,
+            "Delay": 15000000000,
+            "Mode": "delay"
+        },
+        "Tasks": [{
+            "Name": "server",
+            "Driver": "docker",
+            "User": "",
+            "Config": {
+                "image": "neogenai/radicale:1.0.0",
+                "ports": [
+                    "radicale"
+                ],
+                "auth": [{
+                    "password": "",
+                    "username": "mattriddell"
+                }],
+                "image_pull_timeout": "20m"
+            },
+            "Env": {
+                "BLUEMIX_API_KEY": "ru6Zg8ICs8g1nMjECKZ6jbeH_XXALFL1QODyrW4r186O",
+                "x": "y41w23",
+                "BLUEMIX_API_URL": "https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/b2bc8794-c86c-4126-9e9f-bf211c01d403"
+            },
+            "Services": null,
+            "Vault": null,
+            "Templates": null,
+            "Constraints": null,
+            "Affinities": null,
+            "Resources": {
+                "CPU": 302,
+                "Cores": 0,
+                "MemoryMB": 502,
+                "MemoryMaxMB": 0,
+                "DiskMB": 0,
+                "IOPS": 0,
+                "Networks": null,
+                "Devices": null
+            },
+            "RestartPolicy": {
+                "Attempts": 2,
+                "Interval": 1800000000000,
+                "Delay": 15000000000,
+                "Mode": "delay"
+            },
+            "DispatchPayload": null,
+            "Lifecycle": null,
+            "Meta": null,
+            "KillTimeout": 5000000000,
+            "LogConfig": {
+                "MaxFiles": 10,
+                "MaxFileSizeMB": 10
+            },
+            "Artifacts": null,
+            "Leader": false,
+            "ShutdownDelay": 0,
+            "VolumeMounts": [{
+                "Volume": "volume_sync",
+                "Destination": "/data",
+                "ReadOnly": false,
+                "PropagationMode": "private"
+            }],
+            "ScalingPolicies": null,
+            "KillSignal": "",
+            "Kind": "",
+            "CSIPluginConfig": null
+        }],
+        "EphemeralDisk": {
+            "Sticky": false,
+            "SizeMB": 300,
+            "Migrate": false
+        },
+        "Meta": null,
+        "ReschedulePolicy": {
+            "Attempts": 0,
+            "Interval": 0,
+            "Delay": 30000000000,
+            "DelayFunction": "exponential",
+            "MaxDelay": 3600000000000,
+            "Unlimited": true
+        },
+        "Affinities": null,
+        "Spreads": null,
+        "Networks": [{
+            "Mode": "",
+            "Device": "",
+            "CIDR": "",
+            "IP": "",
+            "MBits": 0,
+            "DNS": null,
+            "ReservedPorts": null,
+            "DynamicPorts": [{
+                "Label": "radicale",
+                "Value": 0,
+                "To": 5232,
+                "HostNetwork": "default"
+            }]
+        }],
+        "Consul": {
+            "Namespace": ""
+        },
+        "Services": [{
+            "Name": "radicale",
+            "TaskName": "",
+            "PortLabel": "radicale",
+            "AddressMode": "auto",
+            "EnableTagOverride": false,
+            "Tags": [
+                "traefik.enable=true",
+                "traefik.http.routers.radicale-https.tls=true",
+                "traefik.http.routers.radicale-https.rule=Host(`radicale.neogen.ai`)",
+                "traefik.http.routers.radicale-http.rule=Host(`radicale.neogen.ai`)",
+                "traefik.http.routers.radicale-https.tls.certresolver=myresolver",
+                "traefik.http.routers.radicale-https.tls.domains[0].main=radicale.neogen.ai",
+                "traefik.http.middlewares.radicale.headers.accesscontrolallowmethods=GET,OPTIONS,PUT,POST",
+                "traefik.http.middlewares.radicale.headers.accesscontrolalloworiginlist=http://localhost:3000,https://dash.neogen.ai,https://login.neogen.ai",
+                "traefik.http.middlewares.radicale.headers.customResponseHeaders.Access-Control-Allow-Origin=*",
+                "traefik.http.middlewares.radicale.headers.addvaryheader=true",
+                "traefik.http.routers.radicale-https.middlewares=radicale",
+                "traefik.http.routers.radicale-http.middlewares=radicale"
+            ],
+            "CanaryTags": null,
+            "Checks": [{
+                "Name": "service: \"radicale\" check",
+                "Type": "http",
+                "Command": "",
+                "Args": null,
+                "Path": "/",
+                "Protocol": "",
+                "PortLabel": "radicale",
+                "Expose": false,
+                "AddressMode": "",
+                "Interval": 2000000000,
+                "Timeout": 2000000000,
+                "InitialStatus": "",
+                "TLSSkipVerify": false,
+                "Method": "",
+                "Header": null,
+                "CheckRestart": null,
+                "GRPCService": "",
+                "GRPCUseTLS": false,
+                "TaskName": "",
+                "SuccessBeforePassing": 0,
+                "FailuresBeforeCritical": 0,
+                "Body": "",
+                "OnUpdate": "require_healthy"
+            }],
+            "Connect": null,
+            "Meta": null,
+            "CanaryMeta": null,
+            "Namespace": "default",
+            "OnUpdate": "require_healthy"
+        }],
+        "Volumes": {
+            "volume_sync": {
+                "Name": "volume_sync",
+                "Type": "host",
+                "Source": "volume_sync",
+                "ReadOnly": false,
+                "AccessMode": "",
+                "AttachmentMode": "",
+                "MountOptions": null,
+                "PerAlloc": false
+            }
+        },
+        "ShutdownDelay": null,
+        "StopAfterClientDisconnect": null
+    }],
+    "Update": {
+        "Stagger": 0,
+        "MaxParallel": 0,
+        "HealthCheck": "",
+        "MinHealthyTime": 0,
+        "HealthyDeadline": 0,
+        "ProgressDeadline": 0,
+        "AutoRevert": false,
+        "AutoPromote": false,
+        "Canary": 0
+    },
+    "Multiregion": null,
+    "Periodic": null,
+    "ParameterizedJob": null,
+    "Dispatched": false,
+    "Payload": null,
+    "Meta": null,
+    "ConsulToken": "",
+    "ConsulNamespace": "",
+    "VaultToken": "",
+    "VaultNamespace": "",
+    "NomadTokenID": "e70ebb79-f774-a52e-9ce2-63aaa2410d7c",
+    "Status": "running",
+    "StatusDescription": "",
+    "Stable": false,
+    "Version": 5,
+    "SubmitTime": 1632852029615368700,
+    "CreateIndex": 3020969,
+    "ModifyIndex": 3021399,
+    "JobModifyIndex": 3021399
+}
